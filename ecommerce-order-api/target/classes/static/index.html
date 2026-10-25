@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexMart — Premium Hardware &amp; Lifestyle Store</title>
+  <meta name="description" content="Shop premium electronics, audio wearables, smart office setups, and kitchen appliances with real-time inventory and instant order tracking.">
+  <link rel="stylesheet" href="/css/style.css?v=16.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+
+  <!-- Immediate Critical Theme Styles to guarantee light/dark mode applies instantaneously -->
+  <style id="critical-theme-rules">
+    :root, html, body {
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    :root,
+    html[data-theme="dark"],
+    body[data-theme="dark"],
+    html.dark,
+    body.dark {
+      --bg-primary: #0a0e1a !important;
+      --bg-secondary: #111827 !important;
+      --bg-card: rgba(22, 30, 49, 0.82) !important;
+      --bg-card-hover: rgba(30, 41, 64, 0.95) !important;
+      --bg-glass: rgba(10, 14, 26, 0.88) !important;
+      --bg-input: rgba(24, 33, 53, 0.9) !important;
+      --bg-modal: #111827 !important;
+      --border-subtle: rgba(255, 255, 255, 0.09) !important;
+      --border-card: rgba(255, 255, 255, 0.08) !important;
+      --text-main: #f8fafc !important;
+      --text-muted: #94a3b8 !important;
+      --text-dim: #64748b !important;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+      --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.6) !important;
+      color-scheme: dark !important;
+    }
+    :root[data-theme="light"],
+    html[data-theme="light"],
+    body[data-theme="light"],
+    html.light,
+    body.light,
+    html[data-theme="light"] body {
+      --bg-primary: #f8fafc !important;
+      --bg-secondary: #ffffff !important;
+      --bg-card: #ffffff !important;
+      --bg-card-hover: #f1f5f9 !important;
+      --bg-glass: rgba(255, 255, 255, 0.92) !important;
+      --bg-input: #ffffff !important;
+      --bg-modal: #ffffff !important;
+      --border-subtle: #cbd5e1 !important;
+      --border-card: #e2e8f0 !important;
+      --border-focus: #4f46e5 !important;
+      --primary: #4f46e5 !important;
+      --primary-hover: #4338ca !important;
+      --text-main: #0f172a !important;
+      --text-muted: #334155 !important;
+      --text-dim: #64748b !important;
+      --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06) !important;
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+      --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12) !important;
+      color-scheme: light !important;
+    }
+    html[data-theme="light"] body,
+    body.light {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+  </style>
+
+  <script>
+    // Bulletproof Clean Theme Engine (Silent, instant, no toasts)
+    function syncThemeUI(theme) {
+      const mode = (theme === 'light') ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', mode);
+      document.documentElement.className = mode;
+      if (document.body) {
+        document.body.setAttribute('data-theme', mode);
+        document.body.className = mode;
+      }
+      localStorage.setItem('theme', mode);
+
+      const iconEl = document.getElementById('theme-toggle-icon');
+      if (iconEl) {
+        iconEl.textContent = (mode === 'dark') ? '☀️' : '🌙';
+      }
+    }
+
+    // Run before page paints
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.className = savedTheme;
+    })();
+
+    function setAppTheme(theme) {
+      syncThemeUI(theme);
+      if (typeof state !== 'undefined') {
+        state.theme = theme;
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = (current === 'dark') ? 'light' : 'dark';
+      setAppTheme(next);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      syncThemeUI(savedTheme);
+    });
+  </script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h1>ApexMart</h1>
+          <span>Official Store</span>
+        </div>
+      </a>
+
+      <!-- Search Controls -->
+      <div class="search-box">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" id="search-input" placeholder="Search Sony, Apple, Dyson, Herman Miller, Bose...">
+      </div>
+
+      <!-- Action Buttons & Auth -->
+      <div class="nav-actions">
+        <!-- Minimalist Single-Icon Theme Toggle Button (Silent, No Toasts) -->
+        <button id="btn-theme-toggle" class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <span id="theme-toggle-icon" style="font-size: 1.25rem;">☀️</span>
+        </button>
+
+        <!-- Logged Out State: Both Customer and Admin Sign In Options -->
+        <div id="nav-logged-out" class="nav-logged-out-container">
+          <button id="btn-nav-customer-signin" class="btn btn-primary btn-nav-auth" onclick="openAuthModalWithRole('customer')" title="Sign in as Customer">
+            <span class="nav-auth-icon">👤</span>
+            <span class="nav-auth-label">Customer</span>
+          </button>
+          
+          <button id="btn-nav-admin-signin" class="btn btn-outline btn-admin-nav btn-nav-auth" onclick="openAuthModalWithRole('admin')" title="Sign in as Admin">
+            <span class="nav-auth-icon">🛡️</span>
+            <span class="nav-auth-label">Admin</span>
+          </button>
+          
+          <button id="btn-open-auth" style="display: none;"></button>
+        </div>
+
+        <!-- Logged In State: Mobile and Laptop Responsive Single-Line Toolbar -->
+        <div id="nav-logged-in" class="nav-logged-in-container" style="display: none;">
+          <button id="btn-admin-console" class="btn btn-outline btn-nav-action" style="display: none; border-color: rgba(245, 158, 11, 0.4); color: var(--warning);" title="Open Admin Panel">
+            <span>⚙</span>
+            <span class="nav-label-text">Admin Panel</span>
+          </button>
+          
+          <button id="btn-my-orders" class="btn btn-outline btn-nav-action" style="display: none;" title="View My Orders">
+            <span>📦</span>
+            <span class="nav-label-text">My Orders</span>
+          </button>
+
+          <div class="user-pill" title="Logged In Profile">
+            <div id="user-avatar-initial" class="user-avatar">U</div>
+            <span id="user-display-name" class="user-name">User</span>
+            <span id="user-display-role" class="role-badge">CUSTOMER</span>
+          </div>
+
+          <button id="btn-logout" class="btn-icon" title="Log Out">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Shopping Cart Trigger -->
+        <button id="btn-open-cart" class="btn-icon" title="View Cart">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span id="cart-badge" class="badge-count" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-pill">
+      ✨ 20 Flagship Hardware &amp; Luxury Tech Essentials
+    </div>
+    <h2>
+      Engineered for Performance. <br>
+      <span class="gradient-text">Designed for Modern Living.</span>
+    </h2>
+    <p>
+      Discover premium electronics, spatial audio, smart home lighting, and ergonomic workstations with real-time stock and instant checkout.
+    </p>
+  </section>
+
+  <!-- Filter & Categories & Sorting -->
+  <section class="search-filter-section">
+    <div class="filter-row-top">
+      <div id="category-pills" class="category-pills">
+        <button class="cat-pill active">All Categories</button>
+      </div>
+
+      <!-- Custom Luxury Dropdown (100% custom UI, never native browser select box) -->
+      <div class="search-sort-controls">
+        <div class="custom-dropdown" id="sort-dropdown">
+          <button type="button" class="custom-dropdown-trigger" id="sort-dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
+            <span class="sort-icon">⇅</span>
+            <span id="sort-dropdown-label">Sort: Featured</span>
+            <svg class="dropdown-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="custom-dropdown-menu" id="sort-dropdown-menu">
+            <div class="dropdown-item active" data-value="featured">
+              <span>✨ Featured Collection</span>
+            </div>
+            <div class="dropdown-item" data-value="price-asc">
+              <span>💵 Price: Low to High</span>
+            </div>
+            <div class="dropdown-item" data-value="price-desc">
+              <span>💎 Price: High to Low</span>
+            </div>
+            <div class="dropdown-item" data-value="name">
+              <span>🔤 Alphabetical: A to Z</span>
+            </div>
+          </div>
+          <select id="sort-select" style="display: none;">
+            <option value="featured" selected>Sort by: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Catalog Grid -->
+  <main class="product-grid" id="product-grid">
+    <!-- Products rendered dynamically by app.js -->
+    <div class="empty-state" style="grid-column: 1 / -1;">
+      <p>Loading curated collection...</p>
+    </div>
+  </main>
+
+  <!-- Product Quick View Modal -->
+  <div id="quickview-modal" class="modal" style="max-width: 680px;">
+    <div class="modal-header">
+      <h3 style="font-size:1.15rem; font-weight:700;">Product Overview</h3>
+      <button id="btn-close-quickview" class="drawer-close">&times;</button>
+    </div>
+    <div class="modal-body" id="quickview-content">
+      <!-- Populated dynamically -->
+    </div>
+  </div>
+
+  <!-- Slide-in Cart Drawer -->
+  <aside id="cart-drawer" class="drawer">
+    <div class="drawer-header">
+      <h3>
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        Shopping Cart
+      </h3>
+      <button id="btn-close-cart" class="drawer-close">&times;</button>
+    </div>
+
+    <div id="cart-items-container" class="drawer-content">
+      <!-- Items dynamically populated -->
+    </div>
+
+    <div class="drawer-footer">
+      <div class="drawer-total-row">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">$0.00</span>
+      </div>
+      <div class="drawer-total-row">
+        <span>Express Delivery</span>
+        <span style="color: var(--success); font-weight:700;">FREE</span>
+      </div>
+      <div class="drawer-total-row grand">
+        <span>Estimated Total</span>
+        <span id="cart-grand-total">$0.00</span>
+      </div>
+      <button id="btn-checkout" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;" disabled>
+        Checkout &amp; Place Order
+      </button>
+    </div>
+  </aside>
+
+  <!-- Blinkit/Zepto Style Instant Checkout Modal -->
+  <div id="checkout-modal" class="modal checkout-modal">
+    <div class="modal-header">
+      <div>
+        <h3 style="font-size:1.15rem; font-weight:800;">⚡ Instant Checkout</h3>
+        <div class="checkout-subtitle-badge">🚴 Delivery in 10-15 mins • Apex Quick Store</div>
+      </div>
+      <button id="btn-close-checkout" class="drawer-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <!-- Section 1: Delivery Address -->
+      <div class="co-section">
+        <div class="co-section-title">
+          <span>📍 Delivery Address</span>
+          <button type="button" class="btn btn-outline" id="btn-toggle-new-addr" style="padding: 0.25rem 0.65rem; font-size: 0.76rem;">+ Add New</button>
+        </div>
+
+        <div id="address-cards-container" class="address-cards-grid">
+          <!-- Populated dynamically / default addresses -->
+        </div>
+
+        <!-- Add Address Form (Slide Down) -->
+        <div id="add-address-box" class="add-address-box">
+          <h5 style="font-size:0.88rem; font-weight:700; margin-bottom:0.75rem;">➕ Add New Delivery Address</h5>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.6rem; margin-bottom:0.6rem;">
+            <input type="text" id="new-addr-name" class="form-control" placeholder="Recipient Name" style="font-size:0.82rem;">
+            <input type="tel" id="new-addr-phone" class="form-control" placeholder="Phone Number" style="font-size:0.82rem;">
+          </div>
+          <div class="form-group" style="margin-bottom:0.6rem;">
+            <input type="text" id="new-addr-flat" class="form-control" placeholder="Flat / House / Floor / Building Name" style="font-size:0.82rem;">
+          </div>
+          <div class="form-group" style="margin-bottom:0.6rem;">
+            <input type="text" id="new-addr-street" class="form-control" placeholder="Street, Area, Landmark" style="font-size:0.82rem;">
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:0.6rem; margin-bottom:0.85rem;">
+            <input type="text" id="new-addr-city" class="form-control" placeholder="City" value="Bengaluru" style="font-size:0.82rem;">
+            <input type="text" id="new-addr-pincode" class="form-control" placeholder="PIN Code" value="560001" style="font-size:0.82rem;">
+            <select id="new-addr-tag" class="form-control" style="font-size:0.82rem;">
+              <option value="Home">🏠 Home</option>
+              <option value="Work">🏢 Work</option>
+              <option value="Other">📍 Other</option>
+            </select>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+            <button type="button" class="btn btn-outline" id="btn-cancel-addr" style="font-size:0.78rem; padding:0.35rem 0.8rem;">Cancel</button>
+            <button type="button" class="btn btn-primary" id="btn-save-addr" style="font-size:0.78rem; padding:0.35rem 0.95rem;">Save Address</button>
+          </div>
+        </div>
+
+        <!-- Delivery Instructions Toggles -->
+        <div style="margin-top: 0.75rem;">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-dim);">Delivery Instructions:</span>
+          <div class="delivery-instructions-grid">
+            <div class="instruction-pill" data-instruction="Don't ring doorbell" onclick="toggleInstruction(this)">
+              <span>🔕</span> Don't ring doorbell
+            </div>
+            <div class="instruction-pill" data-instruction="Leave at door" onclick="toggleInstruction(this)">
+              <span>🚪</span> Leave at door
+            </div>
+            <div class="instruction-pill" data-instruction="Call before delivery" onclick="toggleInstruction(this)">
+              <span>📞</span> Call before delivery
+            </div>
+            <div class="instruction-pill" data-instruction="Pet at home" onclick="toggleInstruction(this)">
+              <span>🐾</span> Pet at home
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Delivery Partner Tip -->
+      <div class="co-section">
+        <div class="co-section-title">
+          <span>💖 Thank your Delivery Partner</span>
+          <span style="font-size: 0.75rem; color: var(--success); font-weight: 600;">100% tip goes to rider</span>
+        </div>
+        <div class="tip-chips-row">
+          <button type="button" class="tip-chip selected" data-tip="0" onclick="selectTip(0, this)">No Tip ($0)</button>
+          <button type="button" class="tip-chip" data-tip="2" onclick="selectTip(2, this)">$2.00 ❤️</button>
+          <button type="button" class="tip-chip" data-tip="3" onclick="selectTip(3, this)">$3.00 ⭐</button>
+          <button type="button" class="tip-chip" data-tip="5" onclick="selectTip(5, this)">$5.00 🚀</button>
+        </div>
+      </div>
+
+      <!-- Section 3: Payment Method -->
+      <div class="co-section">
+        <div class="co-section-title">
+          <span>💳 Select Payment Method</span>
+        </div>
+        <div class="payment-methods-grid">
+          <div class="payment-method-card selected" data-method="UPI" onclick="selectPaymentMethod('UPI', this)">
+            <div class="pm-icon-wrap" style="color: #7c3aed;">⚡</div>
+            <div class="pm-details">
+              <h5>UPI Instant Pay</h5>
+              <p>GPay, PhonePe, Paytm, QR</p>
+            </div>
+          </div>
+          <div class="payment-method-card" data-method="CARD" onclick="selectPaymentMethod('CARD', this)">
+            <div class="pm-icon-wrap" style="color: #3b82f6;">💳</div>
+            <div class="pm-details">
+              <h5>Credit / Debit Card</h5>
+              <p>Visa, Mastercard, RuPay</p>
+            </div>
+          </div>
+          <div class="payment-method-card" data-method="NETBANKING" onclick="selectPaymentMethod('NETBANKING', this)">
+            <div class="pm-icon-wrap" style="color: #10b981;">🏦</div>
+            <div class="pm-details">
+              <h5>Net Banking</h5>
+              <p>All major Indian banks</p>
+            </div>
+          </div>
+          <div class="payment-method-card" data-method="COD" onclick="selectPaymentMethod('COD', this)">
+            <div class="pm-icon-wrap" style="color: #f59e0b;">💵</div>
+            <div class="pm-details">
+              <h5>Pay on Delivery</h5>
+              <p>Cash / UPI on doorstep</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Subviews -->
+        <div id="pm-view-UPI" class="pm-subview active">
+          <div style="font-size:0.82rem; color:var(--text-dim); margin-bottom:0.5rem;">Enter UPI ID or Virtual Payment Address (VPA):</div>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="upi-vpa-input" class="form-control" value="customer@okhdfcbank" style="font-size:0.85rem;">
+            <span style="display:inline-flex; align-items:center; background:rgba(16,185,129,0.12); color:var(--success); font-weight:700; font-size:0.75rem; padding:0 0.75rem; border-radius:var(--radius-sm);">✓ Verified</span>
+          </div>
+        </div>
+
+        <div id="pm-view-CARD" class="pm-subview">
+          <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:0.5rem; margin-bottom:0.5rem;">
+            <input type="text" class="form-control" placeholder="Card Number (•••• •••• •••• 4242)" value="4242 •••• •••• 4242" style="font-size:0.82rem;">
+            <input type="text" class="form-control" placeholder="MM/YY" value="08/29" style="font-size:0.82rem;">
+            <input type="password" class="form-control" placeholder="CVV" value="882" maxlength="4" style="font-size:0.82rem;">
+          </div>
+          <input type="text" class="form-control" placeholder="Name on Card" value="John Doe" style="font-size:0.82rem;">
+        </div>
+
+        <div id="pm-view-NETBANKING" class="pm-subview">
+          <label style="font-size:0.82rem; color:var(--text-dim); display:block; margin-bottom:0.35rem;">Select Bank:</label>
+          <select class="form-control" style="font-size:0.85rem;">
+            <option>HDFC Bank (Fastest)</option>
+            <option>ICICI Bank</option>
+            <option>State Bank of India (SBI)</option>
+            <option>Axis Bank</option>
+            <option>Kotak Mahindra Bank</option>
+          </select>
+        </div>
+
+        <div id="pm-view-COD" class="pm-subview">
+          <div style="font-size:0.84rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+            <span>💵</span> Pay via Cash or scan QR code via UPI when rider delivers to your doorstep.
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Detailed Bill Breakdown -->
+      <div class="co-section">
+        <div class="co-section-title">
+          <span>🧾 Detailed Bill Summary</span>
+        </div>
+        <div class="bill-breakdown-card">
+          <div class="bill-line">
+            <span>Items Subtotal</span>
+            <span id="co-items-total">$0.00</span>
+          </div>
+          <div class="bill-line">
+            <span>Instant Delivery Partner Fee</span>
+            <div>
+              <span style="text-decoration: line-through; color: var(--text-dim); margin-right: 6px;">$2.99</span>
+              <span style="color: var(--success); font-weight: 700;">FREE</span>
+            </div>
+          </div>
+          <div class="bill-line">
+            <span>Handling &amp; Packaging Fee</span>
+            <span id="co-handling-fee">$0.49</span>
+          </div>
+          <div class="bill-line">
+            <span>Delivery Partner Tip</span>
+            <span id="co-tip-amount" style="font-weight: 600;">$0.00</span>
+          </div>
+          <div class="bill-line grand">
+            <span>To Pay</span>
+            <span id="co-grand-total">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sticky Place Order CTA -->
+      <button id="btn-confirm-place-order" class="btn-pay-now" onclick="executeOrderPlacement()">
+        <span>Pay</span>
+        <span id="btn-pay-amount">$0.00</span>
+        <span>&amp; Place Order ⚡</span>
+      </button>
+      <div style="text-align: center; margin-top: 0.6rem; font-size: 0.72rem; color: var(--text-dim);">
+        🔒 256-Bit SSL Encrypted • 100% Safe Payments • Instant Dark Store Dispatch
+      </div>
+    </div>
+  </div>
+
+  <!-- Blinkit/Zepto Style Live Order Tracking Modal -->
+  <div id="tracking-modal" class="modal" style="max-width: 600px;">
+    <div class="modal-header">
+      <h3 style="font-size:1.15rem; font-weight:800; color:var(--success);">⚡ Live Order Tracking</h3>
+      <button id="btn-close-tracking" class="drawer-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <!-- Hero Status Banner -->
+      <div class="tracking-hero-banner">
+        <div class="scooter-animation">🛵💨</div>
+        <h3 id="track-order-id" style="font-size:1.2rem; font-weight:900; margin:0.3rem 0; color:var(--text-main);">Order Placed!</h3>
+        <div class="tracking-eta-time" id="track-eta">Calculating ETA...</div>
+        <p id="track-subtitle" style="font-size:0.84rem; color:var(--text-dim); margin:0;">Assigning nearest delivery partner from Apex Dark Store</p>
+      </div>
+
+      <!-- Rider Info & Delivery Secret PIN -->
+      <div class="rider-card">
+        <div class="rider-info-left">
+          <div id="track-rider-avatar" class="rider-avatar">🛵</div>
+          <div>
+            <h5 id="track-rider-name" style="font-size:0.92rem; font-weight:800; margin:0; color:var(--text-main);">Delivery Partner</h5>
+            <p id="track-rider-details" style="font-size:0.78rem; color:var(--text-dim); margin:0.15rem 0 0 0;">Verified Express Courier</p>
+          </div>
+        </div>
+        <div class="delivery-pin-box">
+          <span>Delivery PIN</span>
+          <strong id="track-delivery-pin">----</strong>
+        </div>
+      </div>
+
+      <!-- Live Order Stepper -->
+      <div id="track-live-stepper" class="live-stepper">
+        <div id="track-step-1" class="step-item completed">
+          <div class="step-icon-bubble">✓</div>
+          <div class="step-text">
+            <h5>Order Accepted &amp; Confirmed</h5>
+            <p>Sent to Apex Dark Store</p>
+          </div>
+        </div>
+        <div id="track-step-2" class="step-item active">
+          <div class="step-icon-bubble">📦</div>
+          <div class="step-text">
+            <h5>Packing Items</h5>
+            <p>Quality check in progress</p>
+          </div>
+        </div>
+        <div id="track-step-3" class="step-item">
+          <div class="step-icon-bubble">🛵</div>
+          <div class="step-text">
+            <h5>Out for Delivery</h5>
+            <p>Rider heading towards your doorstep</p>
+          </div>
+        </div>
+        <div id="track-step-4" class="step-item">
+          <div class="step-icon-bubble">🏠</div>
+          <div class="step-text">
+            <h5>Delivered</h5>
+            <p>Share PIN with rider upon arrival</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Card -->
+      <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:0.85rem 1rem; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.4rem;">
+          <span style="color:var(--text-dim);">📍 Delivering to:</span>
+          <span id="track-address-text" style="font-weight:700; color:var(--text-main); text-align:right;">Home</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.4rem;">
+          <span style="color:var(--text-dim);">💳 Payment:</span>
+          <span id="track-payment-text" style="font-weight:700; color:var(--success);">UPI Instant Pay</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+          <span style="color:var(--text-dim);">📝 Instructions:</span>
+          <span id="track-instructions-text" style="color:var(--text-main);">Don't ring doorbell</span>
+        </div>
+      </div>
+
+      <!-- Modal Footer Buttons -->
+      <button id="btn-view-orders-from-track" class="btn btn-outline" style="width: 100%; margin-bottom: 0.6rem; padding: 0.75rem;">
+        📦 View All My Orders
+      </button>
+      <button id="btn-continue-shopping-from-track" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">
+        🛍️ Continue Shopping
+      </button>
+    </div>
+  </div>
+
+  <!-- Orders Modal -->
+  <div id="orders-modal" class="modal">
+    <div class="modal-header">
+      <h3 style="font-size:1.15rem; font-weight:700;">📦 My Order History</h3>
+      <button id="btn-close-orders" class="drawer-close">&times;</button>
+    </div>
+    <div class="modal-body" id="orders-list">
+      <!-- Order items rendered dynamically -->
+    </div>
+  </div>
+
+  <!-- Admin Console Modal -->
+  <div id="admin-modal" class="modal" style="max-width: 820px; width: 95%;">
+    <div class="modal-header">
+      <div>
+        <h3 style="font-size:1.15rem; font-weight:800; color: var(--warning);">⚙ Store Management &amp; Inventory Console</h3>
+        <p style="font-size:0.78rem; color:var(--text-dim); margin:0.15rem 0 0 0;">Manage products, live stock counts, catalog deletions, and order fulfilment</p>
+      </div>
+      <button id="btn-close-admin" class="drawer-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <!-- Admin Navigation Tabs -->
+      <div class="tab-group" style="margin-bottom: 1.25rem;">
+        <button type="button" class="tab-btn admin-tab active" data-tab="inventory" onclick="switchAdminTab('inventory', this)">
+          📦 Inventory &amp; Stock (<span id="admin-prod-count">0</span>)
+        </button>
+        <button type="button" class="tab-btn admin-tab" data-tab="add-prod" onclick="switchAdminTab('add-prod', this)">
+          ➕ Add New Product
+        </button>
+        <button type="button" class="tab-btn admin-tab" data-tab="orders" onclick="switchAdminTab('orders', this)">
+          📑 Customer Orders
+        </button>
+      </div>
+
+      <!-- Tab 1: Product Inventory Management (View, Add Stock, Delete Product) -->
+      <div id="admin-panel-inventory" class="admin-panel-tab">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:1rem; flex-wrap:wrap;">
+          <input type="text" id="admin-search-prod" class="form-control" placeholder="Search inventory by title or category..." oninput="filterAdminProducts(this.value)" style="flex:1; min-width:220px; font-size:0.85rem;">
+          <button type="button" class="btn btn-primary" onclick="switchAdminTab('add-prod')" style="font-size:0.82rem; padding:0.45rem 0.95rem;">
+            ➕ Add New Product
+          </button>
+        </div>
+
+        <div id="admin-products-list" class="admin-products-table-container">
+          <!-- Populated dynamically with product rows -->
+        </div>
+      </div>
+
+      <!-- Tab 2: Add New Product Form -->
+      <div id="admin-panel-add-prod" class="admin-panel-tab" style="display: none;">
+        <form id="form-add-product">
+          <div class="form-group">
+            <label>Product Name *</label>
+            <input type="text" id="prod-name" class="form-control" required placeholder="e.g. Ultra-Wide OLED Gaming Monitor">
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="prod-desc" class="form-control" rows="2" required placeholder="Key specs and highlights"></textarea>
+          </div>
+          <div class="admin-form-3col">
+            <div class="form-group">
+              <label>Price ($) *</label>
+              <input type="number" id="prod-price" step="0.01" min="0.01" class="form-control" required placeholder="199.99">
+            </div>
+            <div class="form-group">
+              <label>Stock Qty *</label>
+              <input type="number" id="prod-stock" min="0" class="form-control" required placeholder="25">
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="prod-category" class="form-control">
+                <option value="1">Electronics</option>
+                <option value="2">Home &amp; Kitchen</option>
+                <option value="3">Audio &amp; Wearables</option>
+                <option value="4">Smart Home &amp; Office</option>
+                <option value="5">Gaming &amp; Accessories</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Custom Image URL (Optional)</label>
+            <input type="url" id="prod-image-url" class="form-control" placeholder="https://images.unsplash.com/... (Leave blank for automated studio photo)">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding:0.75rem; font-weight:700;">
+            ➕ Publish Product to Storefront
+          </button>
+        </form>
+      </div>
+
+      <!-- Tab 3: Customer Orders Section -->
+      <div id="admin-panel-orders" class="admin-panel-tab" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color:var(--text-main);">Customer Order Lifecycle</h4>
+          <select id="admin-order-filter" class="form-control" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+            <option value="">All Statuses</option>
+            <option value="PLACED">PLACED</option>
+            <option value="CONFIRMED">CONFIRMED</option>
+            <option value="SHIPPED">SHIPPED</option>
+            <option value="DELIVERED">DELIVERED</option>
+            <option value="CANCELLED">CANCELLED</option>
+          </select>
+        </div>
+        <div id="admin-orders-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal (Login / Register) -->
+  <div id="auth-modal" class="modal">
+    <div class="modal-header">
+      <h3 style="font-size:1.15rem; font-weight:700;">Account Authentication</h3>
+      <button id="btn-close-auth" class="drawer-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="tab-group">
+        <button class="tab-btn auth-tab active" data-tab="login">Sign In</button>
+        <button class="tab-btn auth-tab" data-tab="register">Create Account</button>
+      </div>
+
+      <!-- Login Form with Role Selection for Customer and Admin -->
+      <form id="login-form">
+        <!-- Role Selection Tabs for Sign In -->
+        <div class="auth-role-selector" style="margin-bottom: 1rem;">
+          <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Choose Sign In Role:</span>
+            <span id="active-role-tag" class="role-pill-indicator customer">Customer Mode</span>
+          </div>
+          
+          <div class="role-cards-grid">
+            <!-- Customer Role Card -->
+            <div id="role-card-customer" class="role-card active" onclick="selectLoginRole('customer')">
+              <div class="role-card-radio"></div>
+              <div class="role-card-icon">🛍️</div>
+              <div class="role-card-content">
+                <div class="role-card-title">Customer</div>
+                <div class="role-card-desc">Shopping &amp; Orders</div>
+              </div>
+            </div>
+
+            <!-- Admin Role Card -->
+            <div id="role-card-admin" class="role-card" onclick="selectLoginRole('admin')">
+              <div class="role-card-radio"></div>
+              <div class="role-card-icon">🛡️</div>
+              <div class="role-card-content">
+                <div class="role-card-title">Administrator</div>
+                <div class="role-card-desc">Store Management</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Role Credentials Helper Banner -->
+        <div id="role-hint-banner" class="role-hint-banner customer">
+          <div class="role-hint-left">
+            <span id="role-hint-icon" style="font-size: 1.15rem;">🛍️</span>
+            <div>
+              <div id="role-hint-text" style="font-weight: 700;">Customer Account</div>
+              <div id="role-hint-email" style="font-size: 0.78rem; opacity: 0.85;">customer.demo@ecommerce.com</div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline btn-autofill" onclick="autofillCurrentRole()">
+            ⚡ Auto-Fill
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="login-email" id="login-email-label">Email Address</label>
+          <input type="email" id="login-email" class="form-control" required placeholder="customer.demo@ecommerce.com">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+        </div>
+        <button type="submit" id="btn-submit-login" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.8rem; font-weight: 700;">
+          Sign In as Customer
+        </button>
+
+        <!-- Instant 1-Click Sign In Section -->
+        <div style="margin-top: 1.15rem; padding-top: 0.9rem; border-top: 1px dashed var(--border-subtle);">
+          <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-dim); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem;">
+            Instant 1-Click Sign In
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+            <button type="button" class="btn btn-instant-customer" onclick="quickLogin('customer')">
+              <span>🛍️</span> Customer Sign In
+            </button>
+            <button type="button" class="btn btn-instant-admin" onclick="quickLogin('admin')">
+              <span>🛡️</span> Admin Sign In
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="reg-name" class="form-control" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="reg-email" class="form-control" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="reg-password" class="form-control" required minlength="6" placeholder="Minimum 6 characters">
+        </div>
+        <div class="form-group">
+          <label>Account Type</label>
+          <select id="reg-role" class="form-control">
+            <option value="CUSTOMER">Customer (Shopping)</option>
+            <option value="ADMIN">Administrator (Store Management)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem;">
+          Register Now
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Background Overlay for Drawers and Modals -->
+  <div id="overlay" class="overlay"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="/js/app.js?v=13.0"></script>
+</body>
+</html>

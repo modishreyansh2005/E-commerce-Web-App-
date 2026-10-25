@@ -1,0 +1,10 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.jdt.ls.java.home": "D:\\jdk-17",
+    "java.home": "D:\\jdk-17",
+    "terminal.integrated.env.windows": {
+        "JAVA_HOME": "D:\\jdk-17",
+        "Path": "D:\\jdk-17\\bin;${env:Path}"
+    },
+    "java.compile.nullAnalysis.mode": "automatic"
+}
